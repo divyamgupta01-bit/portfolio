@@ -20,9 +20,9 @@ function Figure({ title, note, children }: { title: string; note?: string; child
 
 /* ───────────── Google Cloud ───────────── */
 
-const Q = ["Q1 25", "Q2 25", "Q3 25", "Q4 25", "Q1 26", "Q2 26", "Q3 26", "Q4 26F"];
-const REV = [12260, 13624, 15157, 17664, 20028, 24768, 30709, 36237];
-const OI = [2177, 2826, 3594, 5313, 6598, 8814, 11121, 12855];
+export const Q = ["Q1 25", "Q2 25", "Q3 25", "Q4 25", "Q1 26", "Q2 26", "Q3 26", "Q4 26F"];
+export const REV = [12260, 13624, 15157, 17664, 20028, 24768, 30709, 36237];
+export const OI = [2177, 2826, 3594, 5313, 6598, 8814, 11121, 12855];
 
 function TrendChart() {
   const W = 760, H = 330, L = 52, R = 52, T = 24, B = 40;

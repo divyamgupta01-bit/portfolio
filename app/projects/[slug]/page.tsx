@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <p className="legible mt-6 max-w-[40ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-snug tracking-[-0.015em] text-[var(--fg)]/85">{p.hook}</p>
 
           {/* at a glance: the same three questions as the project cards */}
-          <dl className="solid-card mt-10 grid gap-6 rounded-3xl p-6 md:grid-cols-3 md:gap-8 md:p-8" style={{ "--a": h.a } as React.CSSProperties}>
+          <dl className="mt-10 grid grid-cols-1 gap-6 rounded-3xl bg-[#121726] p-6 shadow-[inset_0_2px_0_var(--a)] ring-1 ring-white/10 md:grid-cols-3 md:gap-8 md:p-8" style={{ "--a": h.a } as React.CSSProperties}>
             {[
               ["What it is", p.card.what],
               ["What I did", p.card.did],
@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
           <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
             {p.stats.map((s) => (
-              <li key={s.label} className="solid-card rounded-2xl p-4 md:p-5" style={{ "--a": h.a } as React.CSSProperties}>
+              <li key={s.label} className="flex flex-col gap-2 rounded-2xl bg-[#121726] p-4 shadow-[inset_0_2px_0_var(--a)] ring-1 ring-white/10 md:p-5" style={{ "--a": h.a } as React.CSSProperties}>
                 <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-semibold leading-none tracking-[-0.03em] tabular-nums" style={{ color: h.a }}>{s.value}</p>
                 <p className="mt-2 text-[13.5px] leading-snug text-[var(--fg)]/65">{s.label}</p>
               </li>

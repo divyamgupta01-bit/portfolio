@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { reveal } from "@/lib/anim";
 import { projects } from "@/data/projects";
-import { Arrow, Heading, SectionLabel } from "../ui";
-import ProjectCard from "../projects/ProjectCard";
+import { Heading, SectionLabel } from "../ui";
+import ProjectSlide from "../projects/ProjectSlide";
 
 /** Home-page teaser: the work itself lives on /projects, so this stays short and different from the resume. */
 export default function Work() {
@@ -33,17 +33,23 @@ export default function Work() {
           </p>
         </div>
 
-        <ul className="mt-14 grid gap-4 md:grid-cols-2">
+        <ul className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {projects.slice(0, 4).map((p) => (
-            <ProjectCard key={p.slug} p={p} compact />
+            <li key={p.slug} className="flex flex-col">
+              <ProjectSlide p={p} compact />
+            </li>
           ))}
         </ul>
 
-        <p className="work-cta mt-10">
-          <Link href="/projects" className="arrow-link mono glass rounded-full px-5 py-3">
-            All projects <Arrow />
+        <div className="work-cta mt-10 flex flex-wrap gap-3">
+          <Link
+            href="/projects"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-[13px] font-semibold text-slate-900 transition-colors duration-200 hover:bg-white/85"
+          >
+            See all {projects.length} projects
+            <span aria-hidden>→</span>
           </Link>
-        </p>
+        </div>
       </div>
     </section>
   );

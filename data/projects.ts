@@ -26,6 +26,13 @@ export type Project = {
   finding: Block;
   limits: Block; // what went wrong / what it can't tell you
   next: string[];
+  /** The one-page summary: a headline that states the finding, the chart title, three numbers and the source. */
+  slide: {
+    headline: string;
+    figure: string;
+    kpis: Stat[];
+    source: string;
+  };
   /** Plain-English card copy: what a non-specialist reader needs first. */
   card: {
     type: string; // e.g. "Financial model"
@@ -92,6 +99,12 @@ export const projects: Project[] = [
         "I wrote these limits into the workbook's START HERE tab so that anyone opening it sees them before the numbers.",
       ],
     },
+    slide: {
+      headline: "Google Cloud's Q4 revenue grows to $36.2B, but its margin slips to 35.5%",
+      figure: "Quarterly revenue ($M) and operating margin",
+      kpis: [{ value: "$30.7B", label: "Q3 2026 revenue, +102.6% YoY" }, { value: "+12.5 pts", label: "operating margin vs Q3 2025" }, { value: "$36.2B", label: "Q4 revenue, base case" }],
+      source: "Alphabet Q3 2026 earnings release (SEC); author's model",
+    },
     card: {
       type: "Financial model",
       name: "Google Cloud earnings forecast",
@@ -152,6 +165,12 @@ export const projects: Project[] = [
         "Phases 1 and 2 are built and tested: the report-to-task loop, photos, duplicate merging, the public bulletin board, the supervisor dashboard and admin-configurable options. Not done yet: printable QR sign sheets, SSO sign-in and email notifications, which depend on decisions from library IT. The screenshots below use the demo build, which seeds fictional people and locations only.",
       ],
     },
+    slide: {
+      headline: "Shelf problems that used to get lost now have an owner, a status and a full history",
+      figure: "Dr. Martin Luther King Jr. Library, San José",
+      kpis: [{ value: "7", label: "task states, New to Closed" }, { value: "4", label: "user roles, enforced on the server" }, { value: "5 → 15", label: "wrong PINs → minutes of lockout" }],
+      source: "Stacks Reports demo build (fictional people and locations)",
+    },
     card: {
       type: "Web app",
       name: "Library problem-reporting app",
@@ -211,6 +230,12 @@ export const projects: Project[] = [
         "I tuned the parameters first and questioned the timing second. In hindsight the lag test should come before any optimisation, because tuning on a biased signal tunes the bias. The base workbook is course material, so the repository documents my extension, method and results rather than the file itself.",
       ],
     },
+    slide: {
+      headline: "A $180M backtest result shrank to $0.4M once the trading timing was made realistic",
+      figure: "Growth of $1, Apple vs S&P 500, 2005–2026 (log scale)",
+      kpis: [{ value: "$180M", label: "ending value, signal used same day" }, { value: "$0.4M", label: "ending value, signal used next day" }, { value: "143", label: "parameter combinations tested" }],
+      source: "Monthly closes Jan 2005 – Oct 2026; author's backtest",
+    },
     card: {
       type: "Trading backtest",
       name: "Testing a stock trading model",
@@ -268,6 +293,12 @@ export const projects: Project[] = [
       body: [
         "Thirty observations give the test little power, so a null result here is not proof of no effect. H-1B share is probably not exogenous: growing industries may hire more H-1B workers and see different wage trends at the same time. And the share uses approvals, not workers actually employed, so it can undercount true H-1B intensity. The results describe correlation, not cause.",
       ],
+    },
+    slide: {
+      headline: "Higher H-1B hiring showed no measurable link to wages or unemployment, 2015–2024",
+      figure: "H-1B share of employment by industry",
+      kpis: [{ value: "p = 0.92", label: "wage effect, not significant" }, { value: "p = 0.57", label: "unemployment effect, not significant" }, { value: "30", label: "industry-years of data" }],
+      source: "USCIS H-1B Employer Data Hub; BLS via FRED",
     },
     card: {
       type: "Research paper",
@@ -327,6 +358,12 @@ export const projects: Project[] = [
       body: [
         "National data can hide differences between states. Combining imports and exports trades their separate effects for a cleaner estimate. Education and industry mix are not modelled, and with 34 annual points the model describes association, not cause, so the trade result should be read as a pattern worth investigating rather than a proven mechanism.",
       ],
+    },
+    slide: {
+      headline: "Each point of GDP growth goes with about 0.78 points more youth employment",
+      figure: "U.S. youth unemployment rate, 1991–2024",
+      kpis: [{ value: "+0.78 pts", label: "youth employment per 1 pt of GDP growth" }, { value: "0.735", label: "R², 34 annual observations" }, { value: "p > 0.3", label: "real minimum wage, both models" }],
+      source: "World Bank via FRED; author's regressions",
     },
     card: {
       type: "Research paper",

@@ -341,13 +341,6 @@ html.lenis, html.lenis body { height: auto; }
 /* the phone menu covers the page, so the HUD steps aside */
 html[data-menu] .hud { opacity: 0; }
 
-/* solid, readable cards (project lists): no sky showing through the text */
-.solid-card {
-  background: linear-gradient(180deg, rgba(20, 25, 40, 0.97), rgba(12, 15, 26, 0.97));
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 2px 0 color-mix(in oklab, var(--a, #fff) 70%, transparent), 0 24px 60px -30px rgba(0, 0, 0, 0.8);
-}
-.solid-card:hover { border-color: color-mix(in oklab, var(--a, #fff) 45%, transparent); }
 /* the project pages read like documents, so their glass panels are near-solid */
 .projects-page .glass {
   background: rgba(13, 17, 28, 0.94);
