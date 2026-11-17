@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, scrollStore } from "@/lib/gsap";
 import { onIntro, startIntro } from "@/lib/anim";
@@ -17,6 +17,67 @@ export default function Hero() {
   const pill = useRef<HTMLDivElement>(null);
   const kicker = useRef<HTMLParagraphElement>(null);
   const bridge = useRef<HTMLDivElement>(null);
+  const copy = useRef<HTMLDivElement>(null);
+  const fit = useRef<HTMLDivElement>(null);
+
+  // The bridge spans the full width. Where that would run into the name and buttons, it is
+  // lifted (tower tops may tuck up to the top edge) and the water below the deck fades out
+  // above the text. The deck itself always stays visible: on very short screens the drawing
+  // shrinks just enough to keep it clear of the text.
+  useEffect(() => {
+    const sec = root.current;
+    const wrap = bridge.current;
+    const inner = fit.current;
+    const text = copy.current;
+    if (!sec || !wrap || !inner || !text) return;
+    const TOWER = 0.131; // tower tops, as a fraction of the drawing's height
+    const DECK = 0.671; // the roadway
+    const WATER = 0.794; // tower bases on the water
+    const reset = () => {
+      wrap.style.top = "";
+      inner.style.width = "";
+      wrap.style.maskImage = wrap.style.webkitMaskImage = "";
+      wrap.style.maskComposite = "";
+      wrap.style.setProperty("-webkit-mask-composite", "");
+    };
+    const size = () => {
+      if (window.innerWidth < 768) return reset();
+      const full = (sec.clientWidth * 7) / 16;
+      const textTop = text.offsetTop;
+      const natural = window.innerHeight * 0.06;
+      const edge = 54; // tower tops stay below the name in the top bar
+      const deckGap = 26; // deck stays at least this far above the text
+      let H = full;
+      let top = Math.min(natural, Math.max(edge - TOWER * H, textTop - 8 - WATER * H));
+      if (top + DECK * H > textTop - deckGap) {
+        H = Math.max(260, (textTop - deckGap - edge) / (DECK - TOWER));
+        top = edge - TOWER * H;
+      }
+      const narrow = H < full - 1;
+      wrap.style.top = `${Math.round(top)}px`;
+      inner.style.width = narrow ? `${Math.round((H * 16) / 7)}px` : "";
+
+      // fade: below the deck when the water would reach the text, otherwise just the last waves
+      let down: string;
+      if (top + WATER * H > textTop - 24) {
+        const deckY = top + DECK * H;
+        const startY = Math.max(deckY + 6, textTop - 70);
+        const endY = Math.max(startY + 18, textTop - 8);
+        down = `linear-gradient(to bottom, #000 ${(((startY - top) / H) * 100).toFixed(1)}%, transparent ${(((endY - top) / H) * 100).toFixed(1)}%)`;
+      } else {
+        down = "linear-gradient(to bottom, #000 80%, transparent 86%)";
+      }
+      const across = "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)";
+      wrap.style.maskImage = wrap.style.webkitMaskImage = narrow ? `${down}, ${across}` : down;
+      wrap.style.maskComposite = narrow ? "intersect" : "";
+      wrap.style.setProperty("-webkit-mask-composite", narrow ? "source-in" : "");
+    };
+    size();
+    const ro = new ResizeObserver(size);
+    ro.observe(sec);
+    ro.observe(text);
+    return () => ro.disconnect();
+  }, []);
 
   useGSAP(
     () => {
@@ -50,14 +111,14 @@ export default function Hero() {
           .fromTo(q(".gg-wisp"), { opacity: 0 }, { opacity: 1, duration: 2, stagger: 0.3 }, 2.2)
           .add(() => {
             // ambient life once drawn: fog drifts, gulls bob, cars cross
-            gsap.to(q(".gg-wisp"), { x: (i) => (i % 2 ? -60 : 70), duration: 9, yoyo: true, repeat: -1, ease: "sine.inOut" });
+            gsap.to(q(".gg-wisp"), { x: (i) => (i % 2 ? -60 : 70), duration: 6, yoyo: true, repeat: -1, ease: "sine.inOut" });
             gsap.to(q(".gg-bird"), { y: (i) => -8 - i * 3, x: (i) => 12 + i * 6, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut", stagger: 0.4 });
             q(".gg-car").forEach((car, i) => {
               const rtl = i === 1;
               gsap.fromTo(
                 car,
                 { attr: { cx: rtl ? 1510 : 90 }, opacity: 1 },
-                { attr: { cx: rtl ? 90 : 1510 }, duration: 9 + i * 2.5, delay: i * 1.7, repeat: -1, ease: "none" },
+                { attr: { cx: rtl ? 90 : 1510 }, duration: 5.5 + i * 1.5, delay: i * 1.1, repeat: -1, ease: "none" },
               );
             });
             gsap.to(q(".gg-towers, .gg-cable"), { opacity: 0.82, duration: 2.2, yoyo: true, repeat: -1, ease: "sine.inOut" });
@@ -68,6 +129,8 @@ export default function Hero() {
             gsap.to(q(".gg-boat"), { y: -3, rotate: 2, transformOrigin: "50% 100%", duration: 1.8, yoyo: true, repeat: -1, ease: "sine.inOut" });
           });
       }
+      // a brisk draw-in: ~3.3s as authored → ~2.4s
+      draw.timeScale(1.4);
       const off = onIntro(() => {
         intro.play();
         draw.play();
@@ -96,24 +159,26 @@ export default function Hero() {
   );
 
   return (
-    <section id="hero" ref={root} aria-labelledby="hero-title" className="relative flex min-h-[100svh] flex-col justify-end pb-28 md:pb-32">
+    <section id="hero" ref={root} aria-labelledby="hero-title" className="relative flex min-h-[100svh] flex-col justify-end pb-28 md:pb-32 md:[@media(max-height:800px)]:pb-20">
       <div ref={bridge} className="pointer-events-none absolute inset-x-0 top-[14vh] md:top-[3vh]">
-        <GoldenGate className="block aspect-[16/7] w-full" />
+        <div ref={fit} className="mx-auto">
+          <GoldenGate className="block aspect-[16/7] w-full" />
+        </div>
       </div>
-      <div className="wrap relative">
-        <div ref={pill} className="glass mb-7 inline-flex items-center gap-3 rounded-full px-4 py-2">
+      <div ref={copy} className="wrap relative">
+        <div ref={pill} className="glass mb-7 inline-flex items-center gap-3 rounded-full px-4 py-2 md:[@media(max-height:800px)]:mb-4">
           <span className="relative block h-2 w-2 rounded-full bg-[#4ade80] shadow-[0_0_10px_#4ade80]" aria-hidden />
           <span className="mono">{`Open to ${site.availability} roles`}</span>
         </div>
-        <p ref={kicker} className="mono legible mb-5 flex items-center gap-2.5">
+        <p ref={kicker} className="mono legible mb-5 flex items-center gap-2.5 md:[@media(max-height:800px)]:mb-3 md:[@media(max-height:620px)]:hidden">
           <span className="dot" aria-hidden />
           {`// 01 ${site.sections[0].label} · ${site.location}`}
         </p>
         <h1 id="hero-title" ref={name} tabIndex={-1} className="display legible">
           {site.name.toUpperCase()}
         </h1>
-        <div className="mt-8 grid gap-8 md:grid-cols-12 md:items-end">
-          <p ref={sub} className="mono legible md:col-span-6">
+        <div className="mt-8 grid gap-8 md:grid-cols-12 md:items-end md:[@media(max-height:800px)]:mt-5">
+          <p ref={sub} className="mono legible [text-wrap:balance] md:col-span-6">
             {site.tagline}
           </p>
           <div ref={links} className="flex gap-3 md:col-span-6 md:justify-end">

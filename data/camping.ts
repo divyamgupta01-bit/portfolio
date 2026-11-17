@@ -20,6 +20,9 @@ export type Trip = {
 
 export type Biome = "coast" | "forest" | "desert" | "alpine" | "lake" | "volcanic";
 
+/** Where every trip starts: the journey map begins here. */
+export const home = { name: "San José", lat: 37.3382, lng: -121.8863 };
+
 /**
  * Real trips. Blurbs describe the places themselves; swap in your own words any time.
  * TODO: add `date` ("YYYY-MM"), `nights`, the campground name (e.g. "Yosemite Valley: Upper Pines")
@@ -27,38 +30,93 @@ export type Biome = "coast" | "forest" | "desert" | "alpine" | "lake" | "volcani
  */
 export const trips: Trip[] = [
   {
+    id: "pinnacles",
+    date: "2026-04",
+    name: "Pinnacles National Park",
+    area: "Pinnacles National Park · Gabilan Range",
+    lat: 36.4906,
+    lng: -121.1825,
+    elevationFt: 1300,
+    blurb: "Volcanic rock spires and talus caves in the Gabilan Range, south of San José.",
+    photos: [
+      "/photos/pinnacles-rock-formations.jpg",
+      "/photos/pinnacles-bear-gulch-reservoir.jpg",
+      "/photos/pinnacles-talus-cave.jpg",
+    ],
+    biome: "volcanic",
+  },
+  {
     id: "yosemite-valley",
     name: "Yosemite Valley",
     area: "Yosemite National Park",
     lat: 37.7398,
     lng: -119.5661,
     elevationFt: 4000,
-    blurb: "The valley floor between El Capitan and Half Dome, with the Merced River running through it.",
-    photos: [],
+    date: "2026-04",
+    blurb: "The valley floor between El Capitan and Half Dome, with the Merced River running through it. Hiked the Lower Yosemite Fall trail and the Mist Trail to the top of Vernal Fall.",
+    photos: ["/photos/yosemite-tunnel-view-me.jpg", "/photos/yosemite-valley-view.jpg", "/photos/yosemite-tunnel-view.jpg"],
     biome: "alpine",
   },
   {
     id: "tuolumne",
+    date: "2026-08",
     name: "Tuolumne Meadows",
     area: "Yosemite National Park · Tioga Road",
     lat: 37.8743,
     lng: -119.3583,
     elevationFt: 8600,
     blurb: "High-country meadow on Tioga Road, ringed by granite domes and the peaks of the Cathedral Range.",
-    photos: [],
+    photos: ["/photos/tuolumne-granite-view.jpg", "/photos/tuolumne-campsite.jpg", "/photos/tuolumne-milky-way.jpg"],
     biome: "forest",
   },
   {
     // TODO: move the pin to the actual campground (it sits on the lake for now)
     id: "tahoe",
+    date: "2026-05",
     name: "Lake Tahoe",
     area: "Sierra Nevada · California–Nevada line",
     lat: 39.09,
     lng: -120.04,
     elevationFt: 6225,
     blurb: "The largest alpine lake in North America, straddling the California–Nevada line.",
-    photos: [],
+    photos: ["/photos/tahoe-clear-water.jpg", "/photos/tahoe-tent-view.jpg"],
     biome: "lake",
+  },
+  {
+    id: "sequoia",
+    date: "2026-10",
+    name: "Sequoia National Park",
+    area: "Sequoia National Park · Giant Forest",
+    lat: 36.5818,
+    lng: -118.7514,
+    elevationFt: 6400,
+    blurb: "The Giant Forest, home of the General Sherman Tree, the largest tree on Earth by volume.",
+    photos: ["/photos/sequoia-night-sign.jpg"],
+    biome: "forest",
+  },
+  {
+    id: "death-valley",
+    date: "2026-10",
+    name: "Death Valley National Park",
+    area: "Death Valley National Park · Stovepipe Wells",
+    lat: 36.606,
+    lng: -117.145,
+    elevationFt: 5,
+    blurb: "North America's hottest, driest and lowest national park, with night skies dark enough to see the Milky Way.",
+    photos: ["/photos/deathvalley-milky-way.jpg", "/photos/deathvalley-milky-way-horizon.jpg"],
+    biome: "desert",
+  },
+  {
+    id: "glacier-point",
+    date: "2026-10",
+    name: "Glacier Point",
+    area: "Yosemite National Park · Glacier Point Road",
+    lat: 37.7306,
+    lng: -119.5738,
+    elevationFt: 7214,
+    blurb: "A granite overlook about 3,200 feet above Yosemite Valley, looking straight across at Half Dome.",
+    photos: ["/photos/glacierpoint-half-dome.jpg", "/photos/glacierpoint-sunset.jpg"],
+    biome: "alpine",
   },
 ];
 

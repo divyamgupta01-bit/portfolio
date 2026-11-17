@@ -18,11 +18,12 @@ type Row = {
   summary: string;
   bullets: string[];
   tags: string[];
+  link?: { href: string; label: string };
   next?: boolean;
 };
 
 const rows: Row[] = [
-  ...chapters.map((c) => ({ id: c.id, title: c.title, org: c.org, period: display(c.period), hue: c.hue, summary: c.summary, bullets: c.bullets, tags: c.tags })),
+  ...chapters.map((c) => ({ id: c.id, title: c.title, org: c.org, period: display(c.period), hue: c.hue, summary: c.summary, bullets: c.bullets, tags: c.tags, link: c.link })),
   { id: "next", title: summit.title, org: "Full-time, new grad", period: "June 2027 →", hue: "trail" as Hue, summary: summit.line, bullets: [], tags: [], next: true },
 ];
 const N = rows.length;
@@ -40,9 +41,11 @@ export default function Experience() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const decide = () => setMode(window.innerWidth >= 900 && !scrollStore.reducedMotion ? "pinned" : "stacked");
+    // pin only where the whole ledger fits on screen; shorter laptops get the plain stacked list
+    const query = "(min-width: 900px) and (min-height: 970px)";
+    const decide = () => setMode(window.matchMedia(query).matches && !scrollStore.reducedMotion ? "pinned" : "stacked");
     decide();
-    const mq = window.matchMedia("(min-width: 900px)");
+    const mq = window.matchMedia(query);
     mq.addEventListener("change", decide);
     return () => mq.removeEventListener("change", decide);
   }, []);
@@ -95,7 +98,12 @@ export default function Experience() {
       {/* soft scrim so copy stays readable over the bright midday scene */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "linear-gradient(90deg, rgba(6,8,16,0.6), rgba(6,8,16,0.3) 60%, rgba(6,8,16,0.4))" }}
+        style={{
+          background: "linear-gradient(90deg, rgba(6,8,16,0.6), rgba(6,8,16,0.3) 60%, rgba(6,8,16,0.4))",
+          // fade in and out so the scrim never draws a hard line across the sky
+          maskImage: "linear-gradient(to bottom, transparent, #000 22vh, #000 calc(100% - 22vh), transparent)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent, #000 22vh, #000 calc(100% - 22vh), transparent)",
+        }}
         aria-hidden
       />
       <div className={`wrap relative flex flex-col ${pinned ? "h-[100svh] justify-center pb-16 pt-24" : "py-[14vh]"}`}>
@@ -142,7 +150,7 @@ export default function Experience() {
                   <span className="mono tabular-nums transition-colors duration-500" style={{ color: open ? h.a : "var(--fg-dim)" }}>
                     {r.next ? "→" : String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="legible text-[clamp(1.25rem,2vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em]">{r.title}</span>
+                  <span className="legible text-[clamp(1.1rem,1.6vw,1.45rem)] font-semibold leading-tight tracking-[-0.02em]">{r.title}</span>
                   <span className="mono legible col-start-2 text-[var(--fg)]/75 md:col-start-auto">{r.org}</span>
                   <span className="mono legible dim col-start-2 tabular-nums md:col-start-auto md:text-right">{r.period}</span>
                 </span>
@@ -175,7 +183,7 @@ export default function Experience() {
                     <div className="overflow-hidden">
                       <div className="grid gap-5 pb-6 pl-[60px] md:grid-cols-[56px_1.3fr_1fr_160px] md:gap-x-4 md:pl-0">
                         <div className="md:col-start-2">
-                          <p className="text-[clamp(1.05rem,1.4vw,1.25rem)] font-medium leading-snug">{r.summary}</p>
+                          <p className="text-[clamp(1rem,1.2vw,1.1rem)] font-medium leading-snug">{r.summary}</p>
                           {r.next ? (
                             <ul className="mt-4 flex flex-wrap gap-2">
                               {summit.paths.map((p) => (
@@ -189,12 +197,23 @@ export default function Experience() {
                           ) : (
                             <ul className="mt-3 space-y-2">
                               {r.bullets.map((b) => (
-                                <li key={b} className="flex gap-3 text-[15px] leading-snug text-[var(--fg)]/80">
+                                <li key={b} className="flex gap-3 text-[14px] leading-snug text-[var(--fg)]/80">
                                   <span className="mt-[7px] block h-1 w-1 shrink-0 rounded-full" style={{ background: h.a }} />
                                   <span>{b}</span>
                                 </li>
                               ))}
                             </ul>
+                          )}
+                          {r.link && (
+                            <a
+                              href={r.link.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mono mt-4 inline-block text-[0.8rem] uppercase tracking-[0.1em] underline decoration-white/30 underline-offset-4 hover:decoration-white"
+                              style={{ color: h.a }}
+                            >
+                              {r.link.label} ↗
+                            </a>
                           )}
                         </div>
                         {r.tags.length > 0 && (

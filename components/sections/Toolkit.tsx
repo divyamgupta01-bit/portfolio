@@ -47,6 +47,8 @@ function DomainGlyph({ id, color }: { id: string; color: string }) {
   );
 }
 
+/** short column heads for phones */
+const SHORT: Record<string, string> = { Reviewed: "Rev.", "Action taken": "Acted", "On time": "On time" };
 const OK = "#34d399";
 const EXC = "#fbbf24";
 
@@ -77,7 +79,7 @@ function Workpaper({ step }: { step: number }) {
 
       {/* 1 · understand */}
       <Stage on={step >= 0} className="mt-4 grid gap-3 md:grid-cols-[1fr_auto] md:gap-6">
-        <p className="text-[15px] leading-snug text-[var(--fg)]/85">{ex.control.text}</p>
+        <p className="text-[14px] leading-snug text-[var(--fg)]/85">{ex.control.text}</p>
         <p className="mono self-start rounded-full border border-[var(--line-strong)] px-3 py-1.5 text-[10px]">
           <span className="dim">Risk · </span>
           {ex.control.risk}
@@ -107,17 +109,19 @@ function Workpaper({ step }: { step: number }) {
       {/* 3 · sample, 4 · test */}
       <Stage on={step >= 2} className="mt-5">
         <p className="mono dim text-[10px]">{`Sample from ${ex.population}`}</p>
-        <div className="mt-2 overflow-x-auto">
-          <table className="mono w-full min-w-[520px] border-collapse text-left text-[11px]">
+        <div className="mt-2">
+          {/* fits a phone without sideways scrolling: the # column drops and the check columns get short heads */}
+          <table className="mono w-full border-collapse text-left text-[10.5px] sm:text-[11px]">
             <thead>
               <tr className="dim border-b border-[var(--line)]">
-                <th className="py-2 pr-3 font-normal">#</th>
-                <th className="py-2 pr-3 font-normal">User</th>
-                <th className="py-2 pr-3 font-normal">Role</th>
-                <th className="py-2 pr-3 font-normal">Decision</th>
+                <th className="hidden py-2 pr-3 font-normal sm:table-cell">#</th>
+                <th className="py-2 pr-2 font-normal sm:pr-3">User</th>
+                <th className="py-2 pr-2 font-normal sm:pr-3">Role</th>
+                <th className="py-2 pr-2 font-normal sm:pr-3">Decision</th>
                 {ex.attributes.map((a) => (
-                  <th key={a} className="py-2 pr-3 text-center font-normal">
-                    {a}
+                  <th key={a} className="py-2 pr-1 text-center font-normal sm:pr-3">
+                    <span className="sm:hidden">{SHORT[a] ?? a}</span>
+                    <span className="hidden sm:inline">{a}</span>
                   </th>
                 ))}
               </tr>
@@ -129,14 +133,14 @@ function Workpaper({ step }: { step: number }) {
                   className="border-b border-[var(--line)] transition-colors duration-500"
                   style={{ background: step >= 3 && r.exception ? "color-mix(in oklab, #fbbf24 10%, transparent)" : undefined }}
                 >
-                  <td className="dim py-2 pr-3 tabular-nums">{String(i + 1).padStart(2, "0")}</td>
-                  <td className="py-2 pr-3">{r.id}</td>
-                  <td className="py-2 pr-3 text-[var(--fg)]/80">{r.role}</td>
-                  <td className="py-2 pr-3">{r.decision}</td>
+                  <td className="dim hidden py-2 pr-3 tabular-nums sm:table-cell">{String(i + 1).padStart(2, "0")}</td>
+                  <td className="whitespace-nowrap py-2 pr-2 sm:pr-3">{r.id}</td>
+                  <td className="py-2 pr-2 text-[var(--fg)]/80 sm:pr-3">{r.role}</td>
+                  <td className="py-2 pr-2 sm:pr-3">{r.decision}</td>
                   {ex.attributes.map((a, k) => {
                     const fail = r.exception && k === ex.attributes.length - 1;
                     return (
-                      <td key={a} className="py-2 pr-3 text-center">
+                      <td key={a} className="py-2 pr-1 text-center sm:pr-3">
                         <span
                           className="inline-block transition-[opacity,transform] duration-300"
                           style={{
@@ -167,7 +171,7 @@ function Workpaper({ step }: { step: number }) {
 
       {/* 5 · document */}
       <Stage on={step >= 4} className="mt-5 flex flex-wrap items-end justify-between gap-4 border-t border-[var(--line)] pt-4">
-        <p className="max-w-[46ch] text-[14px] leading-snug">
+        <p className="max-w-[46ch] text-[13.5px] leading-snug">
           <span className="mono dim block text-[10px]">Conclusion</span>
           {ex.conclusion}
         </p>
@@ -196,9 +200,11 @@ export default function Toolkit() {
 
   // pinned walkthrough on desktop with motion; otherwise the finished workpaper
   useEffect(() => {
-    const decide = () => setPinned(window.innerWidth >= 900 && !scrollStore.reducedMotion);
+    // pin only where the workpaper fits below the top bar; shorter laptops scroll it normally
+    const query = "(min-width: 900px) and (min-height: 760px)";
+    const decide = () => setPinned(window.matchMedia(query).matches && !scrollStore.reducedMotion);
     decide();
-    const mq = window.matchMedia("(min-width: 900px)");
+    const mq = window.matchMedia(query);
     mq.addEventListener("change", decide);
     return () => mq.removeEventListener("change", decide);
   }, []);
@@ -281,8 +287,8 @@ export default function Toolkit() {
                     <DomainGlyph id={d.id} color={h.a} />
                     <span className="mono dim">{d.code}</span>
                   </span>
-                  <span className="mt-6 block text-[30px] font-semibold leading-none tracking-[-0.03em]">{d.title}</span>
-                  <span className="mt-3 block text-[15px] leading-snug text-[var(--fg)]/80">{d.line}</span>
+                  <span className="mt-6 block text-[26px] font-semibold leading-none tracking-[-0.03em]">{d.title}</span>
+                  <span className="mt-3 block text-[14px] leading-snug text-[var(--fg)]/80">{d.line}</span>
                   <span
                     id={`dom-${d.id}`}
                     className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
@@ -314,7 +320,7 @@ export default function Toolkit() {
       <FinancialDistrict className="mt-20 block w-full" />
 
       {/* how a control gets tested: steps beside a workpaper that fills in */}
-      <div ref={walk} className={`wrap grid gap-8 md:grid-cols-12 md:gap-6 ${pinned ? "h-[100svh] content-center" : "py-[14vh]"}`}>
+      <div ref={walk} className={`wrap grid gap-8 md:grid-cols-12 md:gap-6 ${pinned ? "h-[100svh] content-center pb-8 pt-24" : "py-[14vh]"}`}>
         <div className="walk-col min-w-0 md:col-span-4">
           <p className="mono legible flex items-center gap-2.5">
             <span className="dot" aria-hidden />
@@ -338,13 +344,13 @@ export default function Toolkit() {
                   <span className="mono text-[10px]" style={{ color: done ? "var(--accent)" : "var(--fg-dim)" }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="legible block text-[22px] font-semibold tracking-[-0.02em]">{p.title}</span>
+                  <span className="legible block text-[19px] font-semibold tracking-[-0.02em]">{p.title}</span>
                   <span
                     className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
                     style={{ gridTemplateRows: active || !pinned ? "1fr" : "0fr", opacity: active || !pinned ? 1 : 0 }}
                   >
                     <span className="overflow-hidden">
-                      <span className="legible block pt-1 text-[15px] leading-snug text-[var(--fg)]/75">{p.body}</span>
+                      <span className="legible block pt-1 text-[14px] leading-snug text-[var(--fg)]/75">{p.body}</span>
                     </span>
                   </span>
                 </>

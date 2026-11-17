@@ -5,7 +5,6 @@ import { Fragment, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { hairlines, reveal } from "@/lib/anim";
 import { display, hues, site, type Hue } from "@/data/site";
-import { chapters } from "@/data/experience";
 import { Crosshairs, SectionLabel } from "../ui";
 import { SanJoseSkyline } from "../BayArt";
 
@@ -44,7 +43,7 @@ export default function About() {
   const frame = useRef<HTMLDivElement>(null);
 
   const stats = [
-    { value: chapters.filter((c) => c.kind === "role").length, label: "Roles so far", hue: "sky" as Hue },
+    { value: site.record.academics.gpa, label: "GPA", hue: "sky" as Hue },
     { value: site.graduation.match(/\d{4}/)?.[0] ?? "", label: "Class of", hue: "pine" as Hue },
     { value: site.availability, label: "Available from", hue: "dawn" as Hue },
   ];
@@ -70,18 +69,18 @@ export default function About() {
           <h2 id="about-title" className="sr-only">
             About
           </h2>
-          <p ref={statement} className="legible mt-8 text-[clamp(1.85rem,3.8vw,3.4rem)] font-medium leading-[1.1] tracking-[-0.025em]">
+          <p ref={statement} className="legible mt-8 text-[clamp(1.5rem,2.9vw,2.6rem)] font-medium leading-[1.1] tracking-[-0.025em]">
             {renderStatement(about.statement, about.highlights as { text: string; hue: Hue }[])}
           </p>
         </div>
 
-        <figure className="md:col-span-4 md:col-start-9 md:mt-20">
+        <figure className="w-full max-w-[220px] md:col-span-3 md:col-start-9 md:mt-20 md:max-w-none">
           <div className="crosshair overflow-hidden rounded-[2px]">
             <Crosshairs />
             <div ref={frame} className="relative aspect-[4/5] overflow-hidden">
               <div className="absolute inset-0">
                 {about.portrait ? (
-                  <Image src={about.portrait} alt={about.portraitAlt} fill sizes="(max-width: 768px) 90vw, 30vw" className="object-cover" />
+                  <Image src={about.portrait} alt={about.portraitAlt} fill sizes="(max-width: 768px) 220px, 22vw" className="object-cover" />
                 ) : (
                   <>
                     <div
@@ -122,7 +121,7 @@ export default function About() {
               style={{ "--a": hues[s.hue].a, "--b": hues[s.hue].b } as React.CSSProperties}
             >
               <p className="mono dim">{s.label}</p>
-              <p className="mt-3 text-[clamp(2.6rem,5vw,4.2rem)] font-semibold leading-none tracking-[-0.04em] tabular-nums" style={{ color: hues[s.hue].a }}>
+              <p className="mt-3 text-[clamp(2.1rem,3.8vw,3.2rem)] font-semibold leading-none tracking-[-0.04em] tabular-nums" style={{ color: hues[s.hue].a }}>
                 {s.value || "—"}
               </p>
             </li>

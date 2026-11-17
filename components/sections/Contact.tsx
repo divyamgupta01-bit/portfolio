@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { reveal } from "@/lib/anim";
 import { scrollToTarget } from "@/lib/lenis";
@@ -13,6 +13,39 @@ const LINK_COLORS = ["#ff8a5b", "#38bdf8", "#a78bfa", "#5eead4"];
 export default function Contact() {
   const root = useRef<HTMLElement>(null);
   const headline = useRef<HTMLHeadingElement>(null);
+  const [copied, setCopied] = useState(false);
+  const copyTimer = useRef<number>(0);
+
+  /** Copy the email address; falls back to a hidden textarea where the clipboard API isn't allowed. */
+  const copyEmail = async () => {
+    const text = site.email;
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        ok = document.execCommand("copy");
+      } catch {
+        ok = false;
+      }
+      ta.remove();
+    }
+    if (!ok) {
+      window.location.href = `mailto:${text}`;
+      return;
+    }
+    setCopied(true);
+    window.clearTimeout(copyTimer.current);
+    copyTimer.current = window.setTimeout(() => setCopied(false), 2200);
+  };
 
   useGSAP(
     () => {
@@ -32,18 +65,17 @@ export default function Contact() {
       external: false,
     },
     { label: "LinkedIn", value: isTodo(site.linkedin) ? "—" : "LinkedIn", href: isTodo(site.linkedin) ? undefined : site.linkedin, external: true },
-    { label: "GitHub", value: isTodo(site.github) ? "—" : "GitHub", href: isTodo(site.github) ? undefined : site.github, external: true },
     { label: "Resume", value: "Resume", href: site.resume, external: true },
   ];
 
   return (
-    <section id="contact" ref={root} aria-labelledby="contact-title" className="relative flex min-h-[100svh] flex-col justify-between pt-[18vh]">
+    <section id="contact" ref={root} aria-labelledby="contact-title" className="relative flex min-h-[100svh] flex-col justify-between pt-[16vh]">
       <div className="wrap">
         <SectionLabel id="contact" />
         <h2
           id="contact-title"
           ref={headline}
-          className="legible mt-6 text-[clamp(4rem,16vw,15rem)] font-semibold leading-[0.9] tracking-[-0.045em]"
+          className="legible mt-6 text-[clamp(3.2rem,11vw,10rem)] font-semibold leading-[0.9] tracking-[-0.045em]"
         >
           {site.contact.headline.endsWith(".") ? (
             <>
@@ -63,7 +95,25 @@ export default function Contact() {
               className="contact-link glass tint rounded-2xl"
               style={{ "--a": LINK_COLORS[links.indexOf(l)], "--b": "transparent" } as React.CSSProperties}
             >
-              {l.href ? (
+              {l.label === "Email" && l.href ? (
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  aria-label={`Copy email address ${site.email}`}
+                  className="arrow-link flex w-full items-baseline justify-between px-5 py-6 text-left leading-[1.55]"
+                >
+                  <span className="min-w-0">
+                    <span className="mono block" style={{ color: LINK_COLORS[0] }}>
+                      {copied ? "// Copied to clipboard ✓" : "// Email · click to copy"}
+                    </span>
+                    <span className="mt-1 block break-all text-[19px] font-medium tracking-[-0.02em]">{l.value}</span>
+                  </span>
+                  <Arrow glyph={copied ? "✓" : "⧉"} />
+                  <span className="sr-only" aria-live="polite">
+                    {copied ? "Email address copied" : ""}
+                  </span>
+                </button>
+              ) : l.href ? (
                 <a
                   href={l.href}
                   {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -71,7 +121,7 @@ export default function Contact() {
                 >
                   <span>
                     <span className="mono block" style={{ color: LINK_COLORS[links.indexOf(l)] }}>{`// ${l.label}`}</span>
-                    <span className="mt-1 block text-[22px] font-medium tracking-[-0.02em]">{l.value}</span>
+                    <span className="mt-1 block text-[19px] font-medium tracking-[-0.02em]">{l.value}</span>
                   </span>
                   <Arrow />
                 </a>
@@ -79,7 +129,7 @@ export default function Contact() {
                 <div className="flex items-baseline justify-between px-5 py-6">
                   <span>
                     <span className="mono dim block">{`// ${l.label}`}</span>
-                    <span className="dim mt-1 block text-[20px]">—</span>
+                    <span className="dim mt-1 block text-[18px]">—</span>
                   </span>
                 </div>
               )}
@@ -90,11 +140,11 @@ export default function Contact() {
 
       <BayBridge className="mt-16 block w-full" />
 
-      <footer className="wrap legible mb-20 mt-6 flex items-center justify-between border-t border-white/15 py-6 md:mb-24">
+      <footer className="wrap legible mb-6 mt-6 flex items-center justify-between border-t border-white/15 py-6 md:mb-12">
         <p className="mono dim">{`// © ${site.year} ${site.name}`}</p>
         <button
           type="button"
-          className="arrow-link mono"
+          className="arrow-link mono md:mr-5"
           onClick={() => {
             scrollToTarget(0, 1.6);
             document.getElementById("hero-title")?.focus({ preventScroll: true });

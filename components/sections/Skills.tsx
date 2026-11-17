@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { hairlines, reveal } from "@/lib/anim";
 import { hues, site } from "@/data/site";
-import { SectionLabel } from "../ui";
+import { Heading, SectionLabel } from "../ui";
 import { PaintedLadies } from "../BayScenes";
 
 export default function Skills() {
@@ -22,16 +22,17 @@ export default function Skills() {
   const groups = [
     { label: "Work", items: site.skills.work, colors: [hues.sky.a, hues.dawn.b, hues.trail.a, hues.gold.a, hues.pine.a, hues.dusk.a] },
     { label: "Interests", items: site.skills.interests, colors: [hues.pine.a, hues.gold.a, hues.dawn.a, hues.dusk.b] },
+    { label: "Languages", items: site.skills.languages, colors: [hues.sky.a, hues.gold.a, hues.dawn.a] },
   ];
 
   return (
-    <section id="skills" ref={root} aria-labelledby="skills-title" className="relative pt-[22vh]">
+    <section id="skills" ref={root} aria-labelledby="skills-title" className="relative pt-[16vh]">
       <div className="wrap">
         <SectionLabel id="skills" />
-        <h2 id="skills-title" className="h2 legible mt-4">
-          Skills
-        </h2>
-        <div className="mt-14 grid gap-14 md:grid-cols-2 md:gap-6">
+        <Heading id="skills-title" className="mt-4">
+          Skills.
+        </Heading>
+        <div className="mt-14 grid gap-14 md:grid-cols-[2fr_1fr_1fr] md:gap-8">
           {groups.map((g, gi) => (
             <div key={g.label}>
               <div className="hairline h-px origin-left" data-hairline="x" />
