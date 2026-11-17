@@ -29,14 +29,19 @@ Each section has a time-of-day palette. **These two lists must stay the same len
 | 1 | `hero` | The Bay | Dawn 06:12 | Golden Gate line drawing draws itself (fog, gulls and cars keep moving; a freighter and a sailboat pass under it); name and buttons fade up; "Open to June 2027 roles" pill |
 | 2 | `about` | About | Sunrise | Statement; portrait ("DG" monogram until a photo is added); spec row; 3 stat cards; **San José skyline** (windows light up, a light-rail train passes) |
 | 3 | `now` | Now | Morning | 4 glass cards: Studying / Working (EY) / Looking for / Community (IIA); **cable car** climbing a hill of rowhouses, Alcatraz's light blinking in the bay |
-| 4 | `experience` | Experience | Midday | A ledger (No. · Role · Organization · Period); pinned on desktop, the row in focus opens (see §5) |
-| 5 | `toolkit` | IT Controls | Afternoon | "What I work on." 4 ITGC domain cards; **SF financial district** illustration; pinned walkthrough: 5 steps beside an example workpaper that fills in (data in `site.toolkit.example`, labelled "Illustrative example · not client data") |
+| 4 | `work` | Projects | Late morning | "Selected work": 4 project cards linking to `/projects/[slug]` + an "All projects" button |
+| 5 | `experience` | Experience | Midday | A ledger (No. · Role · Organization · Period); pinned on desktop, the row in focus opens (see §5) |
+| 6 | `toolkit` | IT Controls | Afternoon | "What I work on." 4 ITGC domain cards; **SF financial district** illustration; pinned walkthrough: 5 steps beside an example workpaper that fills in (data in `site.toolkit.example`, labelled "Illustrative example · not client data") |
 | – | (between 5 and 6) | – | – | **Golden Gate in the fog**: close-up of the south tower, fog bank pouring through, aircraft lights blinking (`page.tsx`) |
-| 6 | `gallery` | Beyond Work | Sunset | "Beyond work": horizontal-scroll photo strip (trips from `data/camping.ts`) with a lightbox |
-| 7 | `skills` | Skills | Dusk | Coloured tags in two groups (Work, Interests); **Painted Ladies** with Sutro Tower's beacons, windows and street lamps coming on |
-| 8 | `contact` | Contact | Night | "Let's talk."; link cards; **Bay Bridge at night** (Bay Lights shimmer, cars cross); back to top |
+| 7 | `gallery` | Beyond Work | Sunset | "Beyond work": horizontal-scroll photo strip (trips from `data/camping.ts`) with a lightbox |
+| 8 | `skills` | Skills | Dusk | Coloured tags in two groups (Work, Interests); **Painted Ladies** with Sutro Tower's beacons, windows and street lamps coming on |
+| 9 | `contact` | Contact | Night | "Let's talk."; link cards; **Bay Bridge at night** (Bay Lights shimmer, cars cross); back to top |
 
 ---
+
+## 2b. Project pages (separate routes)
+
+`/projects` (index) and `/projects/[slug]` (one case study each: question, approach, a real artifact, finding, limits, next steps). Copy is in `data/projects.ts`; charts/tables/screenshots are in `components/projects/Artifacts.tsx` (keyed by slug) and use only numbers from each project's repo, workbook or paper. These routes are plain server-rendered pages: `components/Chrome.tsx` mounts the scroll HUD and Lenis on `/` only. Screenshots in `public/projects/` come from the Stacks app's fictional demo build. **Add a project:** add an entry to `projects` and a component to the `artifacts` map.
 
 ## 3. Where things live
 

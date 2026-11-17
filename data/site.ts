@@ -6,15 +6,15 @@ export const site = {
   tagline: "Economics student · Technology risk intern",
   location: "San José, CA",
   email: "you@example.com", // TODO: real email
-  linkedin: "https://www.linkedin.com/in/TODO", // TODO
-  github: "https://github.com/TODO", // TODO
+  linkedin: "https://www.linkedin.com/in/divyam5129",
+  github: "https://github.com/divyamgupta01-bit",
   resume: "/resume.pdf",
   graduation: "May 2027",
   availability: "June 2027",
   year: 2026,
 
   hero: {
-    primaryCta: "View work",
+    primaryCta: "View projects",
     secondaryCta: "Resume",
   },
 
@@ -155,6 +155,7 @@ export const site = {
     { id: "hero", label: "The Bay" },
     { id: "about", label: "About" },
     { id: "now", label: "Now" },
+    { id: "work", label: "Projects" },
     { id: "experience", label: "Experience" },
     { id: "toolkit", label: "IT Controls" },
     { id: "gallery", label: "Beyond Work" },

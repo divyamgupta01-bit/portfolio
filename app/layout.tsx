@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
-import Hud from "@/components/Hud";
+import Chrome from "@/components/Chrome";
 import Backdrop from "@/components/Backdrop";
 import { site } from "@/data/site";
 
@@ -51,8 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Backdrop />
-        <SmoothScroll />
-        <Hud />
+        <Chrome />
         {children}
       </body>
     </html>

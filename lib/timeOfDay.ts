@@ -38,6 +38,11 @@ export const palettes: Palette[] = [
     accent: hex("#4fd1c5"), accent2: hex("#fbbf24"),
   },
   {
+    name: "Late morning", clock: 11 * 60 + 5,
+    skyTop: hex("#0f3d70"), skyMid: hex("#2a7db4"), horizon: hex("#aee0ea"),
+    accent: hex("#38bdf8"), accent2: hex("#fbbf24"),
+  },
+  {
     name: "Midday", clock: 12 * 60 + 40,
     skyTop: hex("#0c3a6b"), skyMid: hex("#2878b0"), horizon: hex("#b4e2ec"),
     accent: hex("#ff6a2b"), accent2: hex("#38bdf8"),

@@ -1,6 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Now from "@/components/sections/Now";
+import Work from "@/components/sections/Work";
 import Experience from "@/components/sections/Experience";
 import Toolkit from "@/components/sections/Toolkit";
 import Gallery from "@/components/sections/Gallery";
@@ -14,6 +15,7 @@ export default function Page() {
       <Hero />
       <About />
       <Now />
+      <Work />
       <Experience />
       <Toolkit />
       <GoldenGateFog className="my-[8vh] block w-full" />

@@ -80,6 +80,8 @@ export default function SmoothScroll() {
       gsap.ticker.remove(tick);
       ScrollTrigger.removeEventListener("refresh", onRefresh);
       cleanupLenis();
+      // leave no stale time-of-day colours behind when navigating away from the home page
+      for (const v of ["--accent", "--accent-2", "--sky-top", "--sky-mid", "--horizon"]) root.removeProperty(v);
     };
   }, []);
 

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, scrollStore } from "@/lib/gsap";
 import { onIntro, startIntro } from "@/lib/anim";
-import { scrollToTarget } from "@/lib/lenis";
+import Link from "next/link";
 import { site } from "@/data/site";
 import { Arrow } from "../ui";
 import GoldenGate from "../GoldenGate";
@@ -117,16 +117,9 @@ export default function Hero() {
             {site.tagline}
           </p>
           <div ref={links} className="flex gap-3 md:col-span-6 md:justify-end">
-            <a
-              href="#experience"
-              className="arrow-link mono glass rounded-full px-5 py-3"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToTarget("#experience", 1.8);
-              }}
-            >
-              {site.hero.primaryCta} <Arrow glyph="↓" />
-            </a>
+            <Link href="/projects" className="arrow-link mono glass rounded-full px-5 py-3">
+              {site.hero.primaryCta} <Arrow />
+            </Link>
             <a
               href={site.resume}
               target="_blank"
