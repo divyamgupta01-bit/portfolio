@@ -7,7 +7,8 @@ import { h1bFigure } from "@/data/work";
 const SERIES_COLORS = [hues.sky.a, hues.trail.a, hues.pine.a];
 
 /** Line chart of H-1B share by industry. Pure SVG; values are shares (0.04 = 4%). */
-export default function H1BChart() {
+export default function H1BChart({ bare = false }: { bare?: boolean }) {
+  const Wrap = bare ? "div" : "figure";
   const { years, series } = h1bFigure;
   // size the drawing to its box so axis text stays a readable 11px on phones and desktops alike
   const box = useRef<HTMLDivElement>(null);
@@ -29,10 +30,12 @@ export default function H1BChart() {
   const ticks = [0, 0.02, 0.04, 0.06];
 
   return (
-    <figure className="h1b-chart">
-      <figcaption className="mono dim mb-3">
-        H-1B share of employment by industry, 2015–2024
-      </figcaption>
+    <Wrap className="h1b-chart">
+      {!bare && (
+        <figcaption className="mono dim mb-3">
+          H-1B share of employment by industry, 2015–2024
+        </figcaption>
+      )}
       <div ref={box}>
         <svg
           viewBox={`0 0 ${W} ${H}`}
@@ -120,10 +123,12 @@ export default function H1BChart() {
           </li>
         ))}
       </ul>
-      <p className="mono dim mt-3 text-[10px]">
-        Redrawn from Figure 1 of the paper. Sources: USCIS H-1B Employer Data
-        Hub, BLS.
-      </p>
-    </figure>
+      {!bare && (
+        <p className="mono dim mt-3 text-[10px]">
+          Redrawn from Figure 1 of the paper. Sources: USCIS H-1B Employer Data
+          Hub, BLS.
+        </p>
+      )}
+    </Wrap>
   );
 }

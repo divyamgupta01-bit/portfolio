@@ -13,7 +13,7 @@ export const site = {
   year: 2026,
 
   hero: {
-    primaryCta: "View work",
+    primaryCta: "View projects",
     secondaryCta: "Resume",
   },
 
