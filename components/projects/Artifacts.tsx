@@ -309,14 +309,14 @@ export function YouthArtifacts() {
           <Image src="/projects/youth-unemployment-graph.png" alt="Line chart of the U.S. youth unemployment rate from 1991 to 2024, with spikes during the 2008 and 2020 recessions" width={1320} height={513} className="h-auto w-full" />
         </div>
       </Figure>
-      <Figure title="Regression results" note="Dependent variable: youth employment rate (%) · ** p<0.01, *** p<0.001">
+      <Figure title="Regression results" note="Dependent variable: youth employment rate (%) · Model 1 = separate imports and exports, Model 2 = combined trade volume · ** p<0.01, *** p<0.001">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[420px] text-left text-[15px] tabular-nums">
+          <table className="w-full text-left text-[15px] tabular-nums">
             <thead>
               <tr className="mono border-b border-[var(--line)]">
                 <th className="py-2 font-normal">Variable</th>
-                <th className="py-2 text-right font-normal">Model 1: separate trade</th>
-                <th className="py-2 text-right font-normal">Model 2: combined trade</th>
+                <th className="py-2 text-right font-normal">Model 1</th>
+                <th className="py-2 text-right font-normal">Model 2</th>
               </tr>
             </thead>
             <tbody>

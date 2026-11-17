@@ -124,7 +124,7 @@ export const projects: Project[] = [
       ],
     },
     finding: {
-      title: "Bugs I found by testing it",
+      title: "Bugs that testing turned up",
       body: [
         "A photo attached to a completed quick report uploaded correctly but never appeared anywhere. The cause: quick reports have no task, and the task page was the only place photos were shown. The fix was a report log page that lists every report with its thumbnails.",
         "Every timestamp was seven hours off. Times were stored in UTC, which is correct, but templates printed them raw, so a 6 pm report read as 1 am. Fixing the display uncovered a second bug: the supervisor dashboard's overdue check used UTC for 'today', so tasks due near midnight Pacific could be reported as overdue, or not, incorrectly. Both now use the library's local time.",
