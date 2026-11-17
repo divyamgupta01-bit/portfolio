@@ -21,15 +21,15 @@ export default function ProjectsPage() {
             Things I built, tested<span className="accent">.</span>
           </h1>
           <p className="legible prose-body mt-8 text-[var(--fg)]/80">
-            Each project below is a case study: the question, the method, a real chart or screen from the work, what I found, and what
-            went wrong along the way. For the short version of my background, see the{" "}
+            Each project says what it is, what I did and what came out of it. Open one for the full case study, with the real charts,
+            screens and numbers. For the short version of my background, see the{" "}
             <a href={site.resume} target="_blank" rel="noopener noreferrer" className="accent underline underline-offset-4">resume</a>.
           </p>
         </section>
 
-        <ul className="wrap mt-14 grid gap-4 md:grid-cols-2 md:[&>li:last-child:nth-child(odd)]:col-span-2">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.slug} p={p} index={i} />
+        <ul className="wrap mt-14 grid gap-5 md:grid-cols-2 md:[&>li:last-child:nth-child(odd)]:col-span-2">
+          {projects.map((p) => (
+            <ProjectCard key={p.slug} p={p} />
           ))}
         </ul>
 

@@ -46,24 +46,44 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <p className="mono legible">
             <Link href="/projects" className="dim hover:text-[var(--fg)]">← All projects</Link>
           </p>
-          <p className="mono mt-8" style={{ color: h.a }}>{`// ${p.kind}`}</p>
+          <p className="mt-8 flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[13px] font-medium" style={{ background: `color-mix(in oklab, ${h.a} 16%, transparent)`, color: h.a }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: h.a }} aria-hidden />
+              {p.card.type}
+            </span>
+            <span className="text-[13px] text-[var(--fg)]/60">{p.period}</span>
+          </p>
           <h1 className="legible mt-4 max-w-[22ch] text-[clamp(2.25rem,6vw,5rem)] font-semibold leading-[0.98] tracking-[-0.035em]">{p.title}</h1>
           <p className="legible mt-6 max-w-[40ch] text-[clamp(1.25rem,2.4vw,1.75rem)] leading-snug tracking-[-0.015em] text-[var(--fg)]/85">{p.hook}</p>
 
-          <dl className="mono mt-10 grid grid-cols-2 gap-x-6 gap-y-4 border-y border-[var(--line)] py-5 md:grid-cols-4">
+          {/* at a glance: the same three questions as the project cards */}
+          <dl className="solid-card mt-10 grid gap-6 rounded-3xl p-6 md:grid-cols-3 md:gap-8 md:p-8" style={{ "--a": h.a } as React.CSSProperties}>
+            {[
+              ["What it is", p.card.what],
+              ["What I did", p.card.did],
+              ["Result", p.card.result],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <dt className="text-[13px] font-semibold" style={{ color: h.a }}>{k}</dt>
+                <dd className="mt-2 text-[15.5px] leading-relaxed text-[var(--fg)]/90">{v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-[var(--line)] py-6 md:grid-cols-4">
             {[
               ["Context", p.context],
               ["When", p.period],
               ["Tools", p.tools.slice(0, 3).join(" · ")],
             ].map(([k, v]) => (
               <div key={k}>
-                <dt className="dim">{k}</dt>
-                <dd className="mt-1 normal-case tracking-normal text-[14px] text-[var(--fg)]">{v}</dd>
+                <dt className="text-[13px] font-semibold text-[var(--fg)]/55">{k}</dt>
+                <dd className="mt-1.5 text-[14.5px] text-[var(--fg)]">{v}</dd>
               </div>
             ))}
             <div>
-              <dt className="dim">Links</dt>
-              <dd className="mt-1 flex flex-col gap-1 normal-case tracking-normal text-[14px]">
+              <dt className="text-[13px] font-semibold text-[var(--fg)]/55">Links</dt>
+              <dd className="mt-1.5 flex flex-col gap-1 text-[14.5px]">
                 <a href={p.repo} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: h.a }}>{p.repoLabel} ↗</a>
                 {p.extraLinks?.map((l) => (
                   <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: h.a }}>{l.label} ↗</a>
@@ -74,9 +94,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
           <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
             {p.stats.map((s) => (
-              <li key={s.label} className="glass tint rounded-2xl p-4 md:p-5" style={{ "--a": h.a, "--b": "transparent" } as React.CSSProperties}>
+              <li key={s.label} className="solid-card rounded-2xl p-4 md:p-5" style={{ "--a": h.a } as React.CSSProperties}>
                 <p className="text-[clamp(1.35rem,2.6vw,2rem)] font-semibold leading-none tracking-[-0.03em] tabular-nums" style={{ color: h.a }}>{s.value}</p>
-                <p className="mono dim mt-2 normal-case tracking-normal">{s.label}</p>
+                <p className="mt-2 text-[13.5px] leading-snug text-[var(--fg)]/65">{s.label}</p>
               </li>
             ))}
           </ul>

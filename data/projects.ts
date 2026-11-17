@@ -26,6 +26,14 @@ export type Project = {
   finding: Block;
   limits: Block; // what went wrong / what it can't tell you
   next: string[];
+  /** Plain-English card copy: what a non-specialist reader needs first. */
+  card: {
+    type: string; // e.g. "Financial model"
+    name: string; // plain title
+    what: string; // what it is
+    did: string; // what I did
+    result: string; // what came out of it
+  };
 };
 
 export const projects: Project[] = [
@@ -84,6 +92,13 @@ export const projects: Project[] = [
         "I wrote these limits into the workbook's START HERE tab so that anyone opening it sees them before the numbers.",
       ],
     },
+    card: {
+      type: "Financial model",
+      name: "Google Cloud earnings forecast",
+      what: "An Excel model that forecasts Google Cloud's next quarter of revenue and profit, built only from Alphabet's public SEC filings.",
+      did: "Rebuilt the Q3 2026 results, split costs into fixed and variable parts, and set up downside, base and upside forecasts that switch from one cell.",
+      result: "Base case: Q4 revenue of $36.2B with a 35.5% operating margin, slightly lower than Q3 because of the extra cost of renting computing capacity.",
+    },
     next: [
       "Q4 2026 actuals land in early February 2027. I'll freeze this base case, compare it to the reported results and publish the forecast-versus-actual variance.",
     ],
@@ -137,6 +152,13 @@ export const projects: Project[] = [
         "Phases 1 and 2 are built and tested: the report-to-task loop, photos, duplicate merging, the public bulletin board, the supervisor dashboard and admin-configurable options. Not done yet: printable QR sign sheets, SSO sign-in and email notifications, which depend on decisions from library IT. The screenshots below use the demo build, which seeds fictional people and locations only.",
       ],
     },
+    card: {
+      type: "Web app",
+      name: "Library problem-reporting app",
+      what: "A phone-friendly web app that SJSU's library stacks team uses to report problems on the shelves and track them until they're fixed.",
+      did: "Built it end to end: a QR code on each shelf opens a report with the location filled in, and staff assign, update and close every issue.",
+      result: "Every issue now has an owner, a status and a full history, with sign-in, user roles and PIN lockout protecting it.",
+    },
     next: [
       "Printable QR sign sheets for each location.",
       "SSO sign-in and email notifications once library IT confirms the identity system and a sending account.",
@@ -189,6 +211,13 @@ export const projects: Project[] = [
         "I tuned the parameters first and questioned the timing second. In hindsight the lag test should come before any optimisation, because tuning on a biased signal tunes the bias. The base workbook is course material, so the repository documents my extension, method and results rather than the file itself.",
       ],
     },
+    card: {
+      type: "Trading backtest",
+      name: "Testing a stock trading model",
+      what: "A class model that decides each day whether to hold the S&P 500 or cash, which I extended with Apple as a fourth signal.",
+      did: "Added Apple's price data and signal, then tested 143 combinations of settings over 5,462 trading days.",
+      result: "Found that the headline $180M result came from a timing error (look-ahead bias). With realistic timing it fell to about $0.4M, below simply holding Apple.",
+    },
     next: [
       "Act on every signal the next day and re-tune from scratch.",
       "Hold out whole years from the parameter search so the settings are not fit to the past.",
@@ -239,6 +268,13 @@ export const projects: Project[] = [
       body: [
         "Thirty observations give the test little power, so a null result here is not proof of no effect. H-1B share is probably not exogenous: growing industries may hire more H-1B workers and see different wage trends at the same time. And the share uses approvals, not workers actually employed, so it can undercount true H-1B intensity. The results describe correlation, not cause.",
       ],
+    },
+    card: {
+      type: "Research paper",
+      name: "Do H-1B visas affect U.S. wages?",
+      what: "A research paper testing whether industries that hire more H-1B visa workers see lower wages or higher unemployment.",
+      did: "Built a ten-year dataset for Tech, Finance and Health Care from USCIS and BLS data and ran a fixed-effects regression.",
+      result: "No statistically significant effect on wages or unemployment. With 30 data points, the paper is clear about how much that can say.",
     },
     next: [
       "Use an instrument, such as H-1B lottery outcomes or changes to the national visa cap, which move H-1B hiring without coming from any one industry's wage trend.",
@@ -291,6 +327,13 @@ export const projects: Project[] = [
       body: [
         "National data can hide differences between states. Combining imports and exports trades their separate effects for a cleaner estimate. Education and industry mix are not modelled, and with 34 annual points the model describes association, not cause, so the trade result should be read as a pattern worth investigating rather than a proven mechanism.",
       ],
+    },
+    card: {
+      type: "Research paper",
+      name: "What drives youth employment?",
+      what: "A research paper on how economic growth, trade and the minimum wage relate to employment of 15 to 24-year-olds in the U.S.",
+      did: "Ran regressions in R on 34 years of World Bank and FRED data, and fixed a problem caused by two trade measures moving together.",
+      result: "Faster GDP growth goes with higher youth employment, about 0.78 points per point of growth. The national minimum wage had no significant effect.",
     },
     next: [
       "Repeat the model on a state-by-state panel, where the minimum wage varies a lot more than it does in a national average.",

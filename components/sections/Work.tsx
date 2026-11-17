@@ -34,8 +34,8 @@ export default function Work() {
         </div>
 
         <ul className="mt-14 grid gap-4 md:grid-cols-2">
-          {projects.slice(0, 4).map((p, i) => (
-            <ProjectCard key={p.slug} p={p} index={i} compact />
+          {projects.slice(0, 4).map((p) => (
+            <ProjectCard key={p.slug} p={p} compact />
           ))}
         </ul>
 
